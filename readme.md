@@ -43,7 +43,7 @@
 
 # ENDPOINT
 ## Auth (/auth)
-### Register (POST /auth/register)
+### Register (POST /register)
 **Request body: JSON**
 
     {
@@ -75,7 +75,7 @@
         "message": "Internal server error"
     }
 
-### Login (POST /auth/login)
+### Login (POST /login)
 **Request body: JSON**
 
     {
@@ -107,7 +107,7 @@
     }
 
 ## Akun (/account)
-### Update Nama (PUT /account/name)
+### Update Nama (PUT /name)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Request body: JSON**
@@ -129,7 +129,7 @@
         "message": "Internal server error"
     }
 
-### Milih universitas dan jurusan (PUT /account/selection)
+### Milih universitas dan jurusan (PUT /selection)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Request body: JSON**
@@ -152,7 +152,7 @@
         "message": "Internal server error"
     }
 
-### Hapus akun (DELETE /account/delete)
+### Hapus akun (DELETE /delete)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Response: JSON**
@@ -168,7 +168,7 @@
         "message": "Internal server error"
     }
 
-### Tampilkan profile (GET /account/profile)
+### Tampilkan profile (GET /profile)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Response: JSON**
@@ -193,7 +193,7 @@
     }
 
 ## Payment (/payment)
-### Payment tryout (PUT /payment/tryout)
+### Payment tryout (PUT /tryout)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Request body: JSON**
@@ -220,7 +220,7 @@
         "message": "Internal server error"
     }
 
-### Payment upgrade (PUT /payment/upgrade)
+### Payment upgrade (PUT /upgrade)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Request body: JSON**
@@ -248,7 +248,7 @@
     }
 
 ## Admin (/admin)
-### Tambah soal (POST /admin/question/add)
+### Tambah soal (POST /question/add)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Request body: JSON**
@@ -277,7 +277,7 @@
         "message": "Internal server error"
     }
 
-### Update soal (PUT /admin/question/update)
+### Update soal (PUT /question/update)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Request body: JSON**
@@ -307,7 +307,7 @@
         "message": "Internal server error"
     }
 
-### Delete soal (DELETE /admin/question/delete)
+### Delete soal (DELETE /question/delete)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Request (params): (Required) id => id_post**
@@ -330,7 +330,7 @@
         "message": "Internal server error"
     }
 
-### Tampilkan semua soal (GET /admin/question/show)
+### Tampilkan semua soal (GET /question/show)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Response: JSON**
@@ -368,7 +368,7 @@
         "message": "Internal server error"
     }
 
-### Tampilkan soal berdasar tipe (GET /admin/question/show/:id)
+### Tampilkan soal berdasar tipe (GET /question/show/:id)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Request (params): (Required) id => id_post**
@@ -400,7 +400,7 @@
         "message": "Internal server error"
     }
 
-### Update member payment status (PUT /admin/user/payment)
+### Update member payment status (PUT /user/payment)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Response: JSON**
@@ -421,7 +421,7 @@
         "message": "Internal server error"
     }
 
-### Tampilkan semua member (GET /admin/user/show)
+### Tampilkan semua member (GET /user/show)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Response: JSON**
