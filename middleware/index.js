@@ -27,5 +27,5 @@ module.exports = {
             const err = new Error("Login First")
             next(err)
         }
-    }
+    },
 }

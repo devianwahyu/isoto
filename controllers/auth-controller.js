@@ -40,16 +40,17 @@ module.exports = {
                 if (!isVerified) res.status(401).send('Wrong password')
                 else {
                     const payload = {
-                        "EMAIL": check[0].EMAIL,
-                        "ID": check[0].ID,
-                        "ID_TIPE_MEMBER": check[0].ID_TIPE_MEMBER,
-                        "STATUS_BAYAR": check[0].STATUS_BAYAR
+                        "email": check[0].EMAIL,
+                        "id": check[0].ID,
+                        "tipe_member": check[0].ID_TIPE_MEMBER,
+                        "tipe_soal": check[0].ID_TIPE_SOAL,
+                        "status_bayar": check[0].STATUS_BAYAR
                     }
                     const token = await jwt.sign(payload, JWT_KEY)
                     if (token) {
                         res.status(200).json({
                             "success": true,
-                            "token": token
+                            "token": token,
                         })
                     } else {
                         res.status(500).send("JWT can't generate token")
