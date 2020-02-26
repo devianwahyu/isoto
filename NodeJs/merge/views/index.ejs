@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>hi cok</title>
+</head>
+
+<body>
+    <li id="soal"></li>
+    <form action="" method="POST">
+        <input type="radio" name="answer" id="a">
+        <input type="radio" name="answer" id="b">
+        <input type="radio" name="answer" id="c">
+    </form>
+
+    <button id="btn1" value="0">SOAL 01</button>
+    <button id="btn2" value="1">SOAL 02</button>
+    <button id="btn3" value="2">SOAL 03</button>
+    <button id="btn4" value="3">SOAL 04</button>
+    <button id="btn5" value="4">SOAL 05</button>
+    <button id="btn6" value="5">SOAL 06</button>
+    <button id="btn7" value="6">SOAL 07</button>
+    <button id="btn8" value="7">SOAL 08</button>
+    <button id="btn9" value="8">SOAL 09</button>
+    <button id="btn10" value=9">SOAL 10</button>
+    <button id="btn11" value="10">SOAL 11</button>
+    <button id="btn12" value="11">SOAL 12</button>
+    <button id="btn13" value="12">SOAL 13</button>
+    <button id="btn14" value="13">SOAL 14</button>
+    <button id="btn15" value="14">SOAL 15</button>
+    <button id="btn16" value="15">SOAL 16</button>
+    <button id="btn17" value="16">SOAL 17</button>
+    <button id="btn18" value="17">SOAL 18</button>
+    <button id="btn19" value="18">SOAL 19</button>
+    <button id="btn20" value="19">SOAL 20</button>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+
+    $(() => {
+
+        var $soal = $('#soal')
+        var $a = $('#a')
+        var $b = $('#b')
+        var $c = $('#c')
+
+        function btnOnClick($idx) {
+            $.ajax({
+                type: "GET",
+                url: "/user",
+                success: (data) => {
+                    $soal.html("<p>" + data.data[$idx].soal + "</p>")
+                    $a.html("<p>" + data.data[$idx].a + "</p>")
+                    $b.html("<p>" + data.data[$idx].b + "</p>")
+                    $c.html("<p>" + data.data[$idx].c + "</p>")
+                }
+            })
+        }
+
+        $('#btn1').on('click', () => {
+            btnOnClick($('#btn1').val())
+        })
+
+        $('#btn2').on('click', () => {
+            btnOnClick($('#btn2').val())
+        })
+
+        $('#btn3').on('click', () => {
+            btnOnClick($('#btn3').val())
+        })
+
+        $('#btn4').on('click', () => {
+            btnOnClick($('#btn4').val())
+        })
+
+        $('#btn5').on('click', () => {
+            btnOnClick($('#btn5').val())
+        })
+
+        $('#btn6').on('click', () => {
+            btnOnClick($('#btn6').val())
+        })
+
+        $('#btn7').on('click', () => {
+            btnOnClick($('#btn7').val())
+        })
+
+        $('#btn8').on('click', () => {
+            btnOnClick($('#btn8').val())
+        })
+
+        $('#btn9').on('click', () => {
+            btnOnClick($('#btn9').val())
+        })
+
+        $('#btn10').on('click', () => {
+            btnOnClick($('#btn10').val())
+        })
+
+        $('#btn11').on('click', () => {
+            btnOnClick($('#btn11').val())
+        })
+
+        $('#btn12').on('click', () => {
+            btnOnClick($('#btn12').val())
+        })
+
+        $('#btn13').on('click', () => {
+            btnOnClick($('#btn13').val())
+        })
+
+        $('#btn14').on('click', () => {
+            btnOnClick($('#btn14').val())
+        })
+
+        $('#btn15').on('click', () => {
+            btnOnClick($('#btn15').val())
+        })
+
+        $('#btn16').on('click', () => {
+            btnOnClick($('#btn16').val())
+        })
+
+        $('#btn17').on('click', () => {
+            btnOnClick($('#btn17').val())
+        })
+
+        $('#btn18').on('click', () => {
+            btnOnClick($('#btn18').val())
+        })
+
+        $('#btn19').on('click', () => {
+            btnOnClick($('#btn19').val())
+        })
+
+        $('#btn20').on('click', () => {
+            btnOnClick($('#btn20').val())
+        })
+    })
+
+</script>
+
+</html>
