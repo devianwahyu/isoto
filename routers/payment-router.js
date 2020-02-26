@@ -1,11 +1,11 @@
 const router = require('express').Router()
-const paymentController = require('../controllers/payment-controller')
+const paymentCtrl = require('../controllers/payment-controller')
 const { checkToken } = require('../middleware')
 
 // Bayar tryout
-router.put('/tryout', checkToken, paymentController.tryoutPayment)
+router.put('/tryout', checkToken, paymentCtrl.tryoutPayment)
 
 // Bayar upgrade member
-router.put('/upgrade', checkToken, paymentController.upgradePayment)
+router.put('/upgrade', checkToken, paymentCtrl.upgradePayment)
 
 module.exports = router

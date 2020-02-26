@@ -1,28 +1,27 @@
 # MODEL
 ## Akun
-* id: integer
-* nama: string
+* username: string
 * email: string
 * password: string
 * status_bayar: integer
+* status_kerja: integer
 * id_tipe_member: integer
 * id_universitas: integer
-* id_jurusan: integer
-* id_skor: ineteger
+* id_prodi: integer
 * id_tipe_soal: integer
 
-## Jurusan
+## Prodi
 * id: integer
-* id_universitas: integer
-* nama: string
+* id_tipe_prodi: integer
+* prodi: string
 
 ## Universitas
 * id: integer
-* nama: string
+* universitas: string
 
 ## Tipe_member
 * id: integer
-* nama: string
+* tipe_member: string
 
 ## Skor
 * id: integer
@@ -32,6 +31,10 @@
 ## Soal
 * id: integer
 * konten: text
+* opsi_a: string
+* opsi_b: string
+* opsi_c: string
+* opsi_d: string
 * jawaban: char
 * penjawab_salah: integer
 * bobot: double
@@ -39,17 +42,23 @@
 
 ## Tipe_soal
 * id: integer
-* nama: string
+* tipe_soal: string
 
-# ENDPOINT
+## Batas_nilai
+* id_prodi: integer
+* id_universitas: integer
+* batas_nilai: double
+
+# ENDPOINT (/api)
 ## Auth (/auth)
-### Register (POST /register)
+### Daftar (POST /daftar)
 **Request body: JSON**
 
     {
-        "name": "User",
+        "username": "User",
         "email": "email@gmail.com",
-        "password": "passwordaman"
+        "password": "passwordaman",
+        "confirmPassword": "passwordaman",
     }
 
 **Response: JSON**
@@ -58,6 +67,11 @@
     {
         "success": true,
         "message": "Registered successfuly"
+    }
+    401:
+    {
+        "success": false,
+        "message": "Confirm password not same with password"
     }
     409:
     {
@@ -106,37 +120,15 @@
         "message": "Internal server error"
     }
 
-## Akun (/account)
-### Update Nama (PUT /name)
+## Akun (/akun)
+### Milih universitas dan jurusan (PUT /pilih)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Request body: JSON**
 
     {
-        "name": "newName"
-    }
-
-**Response: JSON**
-
-    200:
-    {
-        "success": true,
-        "message": "Name updated successfuly"
-    }
-    500:
-    {
-        "success": false,
-        "message": "Internal server error"
-    }
-
-### Milih universitas dan jurusan (PUT /selection)
-**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
-
-**Request body: JSON**
-
-    {
-        "universitas": "universitas brawijaya",
-        "jurusan": "Kedokteran"
+        "universitas": "1",
+        "prodi": "1"
     }
 
 **Response: JSON**
@@ -152,7 +144,7 @@
         "message": "Internal server error"
     }
 
-### Hapus akun (DELETE /delete)
+### Hapus akun (DELETE /profil)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Response: JSON**
@@ -168,7 +160,7 @@
         "message": "Internal server error"
     }
 
-### Tampilkan profile (GET /profile)
+### Tampilkan profile (GET /profil)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Response: JSON**
@@ -180,7 +172,7 @@
             {
                 "nama": "user",
                 "email": "email@gmail.com",
-                "jurusan": "kedokteran",
+                "prodi": "kedokteran",
                 "universitas": "univeritas brawijaya",
                 "tipe_member": "reguler"
             }
@@ -192,14 +184,15 @@
         "message": "Internal server error"
     }
 
-## Payment (/payment)
+## Pembayaran (/pembayaran)
 ### Payment tryout (PUT /tryout)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
 **Request body: JSON**
 
     {
-        "nominal": "25000"
+        "nominal": "25000",
+        "questionType": "1"
     }
 
 **Response: JSON**
@@ -466,3 +459,120 @@
         "success": false,
         "message": "Internal server error"
     }
+
+## Rasionalisasi (/rasionalisasi)
+### Cek pilihan utama (GET /utama)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Response: JSON**
+
+    200:
+    {
+        "message": "Berdasarkan simulasi BrawijayaTO, nilai kamu diprediksikan SUDAH memenuhi batas nilai prediksi lulus prodi yang kamu pilih."
+    }
+    500:
+    {
+        "success": false,
+        "message": "Internal server error"
+    }
+
+### Alternatif universitas (GET /alternatif/universitas)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Response: JSON**
+
+    200:
+    {
+        "success": true,
+        "data": [
+            {
+                "prodi": "Teknik Mesin",
+                "universitas": "Universitas Brawijaya",
+            },
+            {
+                "prodi": "Sistem Informasi",
+                "universitas": "Universitas Brawijaya",
+            },
+            {.....}
+        ]
+    }
+    500:
+    {
+        "success": false,
+        "message": "Internal server error"
+    }
+
+### Alternatif prodi (GET /alternatif/prodi)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Response: JSON**
+
+    200:
+    {
+        "success": true,
+        "data": [
+            {
+                "prodi": "Kedokteran",
+                "universitas": "Universitas Gajah Mada",
+            },
+            {
+                "prodi": "Kedokteran",
+                "universitas": "Universitas Indonesia",
+            },
+            {.....}
+        ]
+    }
+    500:
+    {
+        "success": false,
+        "message": "Internal server error"
+    }
+
+## Pembahasan (/pembahasan)
+### Video (/video)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Response: JSON**
+
+    200:
+    {
+        "success": true,
+        "data": mp4
+    }
+    403:
+    {
+        "success": false,
+        "message" "You're not premium member"
+    }
+    
+### Teks (/teks)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Response: JSON**
+
+    200:
+    {
+        "success": true,
+        "data": [
+            {
+                "id": 1,
+                "data": "a"
+            },
+            {
+                "id": 2,
+                "data": "c"
+            },
+            {
+                "id": 3,
+                "data": "a"
+            },
+            {...}
+        ]
+    }
+    403:
+    {
+        "success": false,
+        "message" "You're not premium member"
+    }
+    
+

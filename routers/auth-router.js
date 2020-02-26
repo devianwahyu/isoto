@@ -1,11 +1,11 @@
 const router = require('express').Router()
-const authController = require('../controllers/auth-controller')
+const authCtrl = require('../controllers/auth-controller')
 const { checkToken } = require('../middleware')
 
 // Register
-router.post('/register', authController.register)
+router.post('/daftar', authCtrl.register)
 
 // Login
-router.post('/login', authController.login)
+router.post('/login', authCtrl.login)
 
 module.exports = router

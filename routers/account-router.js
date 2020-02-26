@@ -1,17 +1,14 @@
 const router = require('express').Router()
-const accountController = require('../controllers/account-controller')
+const accountCtrl = require('../controllers/account-controller')
 const { checkToken } = require('../middleware')
 
-// Edit nama
-router.put('/name', checkToken, accountController.updateName)
-
 // Jurusan dan Universitas pilihan
-router.put('/selection', checkToken, accountController.insertSelection)
+router.put('/pilih', checkToken, accountCtrl.pilihUnivDepart)
 
 // Hapus akun
-router.delete('/delete', checkToken, accountController.deleteAccount)
+router.delete('/profil', checkToken, accountCtrl.deleteAccount)
 
 // Tampilkan profile
-router.get('/profile', checkToken, accountController.getProfile)
+router.get('/profil', checkToken, accountCtrl.getProfile)
 
 module.exports = router

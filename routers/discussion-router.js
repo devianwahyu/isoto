@@ -1,11 +1,11 @@
 const router = require('express').Router()
 const { checkToken } = require('../middleware')
-const discussionController = require('../controllers/discussion-controller')
+const discussCtrl = require('../controllers/discussion-controller')
 
 // Video pembahasan
-router.get('/video', checkToken, discussionController.videoDiscussion)
+router.get('/video', checkToken, discussCtrl.videoDiscussion)
 
 // Kunci jawaban
-router.get('/answer', checkToken, discussionController.textDiscussion)
+router.get('/teks', checkToken, discussCtrl.textDiscussion)
 
 module.exports = router
