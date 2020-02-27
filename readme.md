@@ -23,10 +23,10 @@
 * id: integer
 * tipe_member: string
 
-## Skor
+## Nilai_user
 * id: integer
-* id_akun: integer
-* skor: double
+* id_user: string
+* nilai: double
 
 ## Soal
 * id: integer
@@ -36,7 +36,6 @@
 * opsi_c: string
 * opsi_d: string
 * jawaban: char
-* penjawab_salah: integer
 * bobot: double
 * id_tipe_soal: integer
 
@@ -49,6 +48,11 @@
 * id_universitas: integer
 * batas_nilai: double
 
+## Rekap_to
+* id_user: string
+* id_soal: integer
+* bobot: double
+
 # ENDPOINT (/api)
 ## Auth (/auth)
 ### Daftar (POST /daftar)
@@ -58,7 +62,7 @@
         "username": "User",
         "email": "email@gmail.com",
         "password": "passwordaman",
-        "confirmPassword": "passwordaman",
+        "confirmPassword":"passwordaman",
     }
 
 **Response: JSON**
