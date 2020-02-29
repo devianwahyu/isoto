@@ -2,7 +2,7 @@ const fs = require('fs')
 const db = require('../database')
 
 module.exports = {
-    videoDiscussion: async (req, res, next) => {
+    videoBahas: async (req, res, next) => {
         const tipe_member = req.user.tipe_member
         try {
             if (tipe_member == 3) {
@@ -41,12 +41,22 @@ module.exports = {
         }
     },
 
-    textDiscussion: async (req, res, next) => {
+    teksBahas: async (req, res, next) => {
+        const tipe_soal = req.user.tipe_soal
         try {
-            const [rows] = await db.query('SELECT NAMA TIPE, KONTEN, JAWABAN FROM SOAL S INNER JOIN TIPE_SOAL TS ON S.ID_TIPE_SOAL = TS.ID WHERE S.ID_TIPE_SOAL = ?', [req.user.tipe_soal])
+            const queryData = `
+            select s.id, tipe_soal, materi, jawaban 
+            from soal s 
+            inner join tipe_soal ts 
+            on s.id_tipe_soal = ts.id 
+            inner join materi_soal ms 
+            on s.id_materi_soal = ms.id 
+            where id_tipe_soal = ? or id_tipe_soal = 3`
+
+            const [getData] = await db.query(queryData, [tipe_soal])
             res.status(200).json({
                 "success": true,
-                "data": rows
+                "data": getData
             })
         } catch (e) {
             next(e)

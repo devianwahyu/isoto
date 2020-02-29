@@ -3,7 +3,7 @@ const authCtrl = require('../controllers/auth-controller')
 const { checkToken } = require('../middleware')
 
 // Register
-router.post('/daftar', authCtrl.register)
+router.post('/daftar', authCtrl.daftar)
 
 // Login
 router.post('/login', authCtrl.login)

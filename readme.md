@@ -4,7 +4,7 @@
 * email: string
 * password: string
 * status_bayar: integer
-* status_kerja: integer
+* to_ke: integer
 * id_tipe_member: integer
 * id_universitas: integer
 * id_prodi: integer
@@ -24,9 +24,9 @@
 * tipe_member: string
 
 ## Nilai_user
-* id: integer
 * id_user: string
 * nilai: double
+* to_ke: integer
 
 ## Soal
 * id: integer
@@ -38,6 +38,7 @@
 * jawaban: char
 * bobot: double
 * id_tipe_soal: integer
+* id_materi_soal
 
 ## Tipe_soal
 * id: integer
@@ -46,23 +47,34 @@
 ## Batas_nilai
 * id_prodi: integer
 * id_universitas: integer
+* id_bidang_keilmuan
 * batas_nilai: double
 
 ## Rekap_to
 * id_user: string
 * id_soal: integer
+* id_materi_soal: integer
 * bobot: double
+* to_ke: integer
+
+## Bidang_keilmuan
+* id: integer
+* bidang_keilmuan: string
+
+## Materi_soal
+* id: integer
+* materi: string
 
 # ENDPOINT (/api)
 ## Auth (/auth)
 ### Daftar (POST /daftar)
-**Request body: JSON**
+**Request (body): JSON**
 
     {
         "username": "User",
         "email": "email@gmail.com",
         "password": "passwordaman",
-        "confirmPassword":"passwordaman",
+        "konfirmasiPassword":"passwordaman",
     }
 
 **Response: JSON**
@@ -70,31 +82,27 @@
     200:
     {
         "success": true,
-        "message": "Registered successfuly"
+        "message": "Daftar berhasil"
     }
     401:
     {
-        "success": false,
-        "message": "Confirm password not same with password"
+        "message": "Password konfirmasi tidak sama sengan password"
     }
     409:
     {
-        "success": false,
-        "message": "Email already registered"
+        "message": "Email atau Username sudah terdaftar"
     }
     422:
     {
-        "success": false,
-        "message": "Wrong email format"
+        "message": "Format email salah"
     }
     500:
     {
-        "success": false,
         "message": "Internal server error"
     }
 
 ### Login (POST /login)
-**Request body: JSON**
+**Request (body): JSON**
 
     {
         "email": "email@gmail.com",
@@ -110,23 +118,41 @@
     }
     401:
     {
-        "success": false,
-        "message": "Wrong password"
+        "message": "Password salah"
     }
     404:
     {
-        "success": false,
-        "message": "User not found"
+        "message": "Pengguna tidak ditemukan"
     }
     500:
     {
-        "success": false,
         "message": "Internal server error"
     }
 
 ## Akun (/akun)
+### Tampilkan profile (GET /profil)
+**Request (header): (Required) authorization: Bearer <JWT_TOKEN>**
+
+**Response: JSON**
+
+    200:
+    {
+        "success": true,
+        "data": {
+                    "nama": "user",
+                    "email": "email@gmail.com",
+                    "prodi": "Matematika",
+                    "universitas": "Univeritas Brawijaya",
+                    "tipe_member": "Reguler"
+                }
+    }
+    500:
+    {
+        "message": "Internal server error"
+    }
+
 ### Milih universitas dan jurusan (PUT /pilih)
-**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+**Request (header): (Required) authorization: Bearer <JWT_TOKEN>**
 
 **Request body: JSON**
 
@@ -140,51 +166,25 @@
     200:
     {
         "success": true,
-        "message": "Updated successfuly"
+        "message": "Berhasil memilih universitas dan prodi"
     }
     500:
     {
-        "success": false,
         "message": "Internal server error"
     }
 
 ### Hapus akun (DELETE /profil)
-**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+**Request (header): (Required) authorization: Bearer <JWT_TOKEN>**
 
 **Response: JSON**
 
     200:
     {
         "success": true,
-        "message": "Account deleted successfuly"
+        "message": "Akun berhasil dihapus"
     }
     500:
     {
-        "success": false,
-        "message": "Internal server error"
-    }
-
-### Tampilkan profile (GET /profil)
-**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
-
-**Response: JSON**
-
-    200:
-    {
-        "success": true,
-        "data": [
-            {
-                "nama": "user",
-                "email": "email@gmail.com",
-                "prodi": "kedokteran",
-                "universitas": "univeritas brawijaya",
-                "tipe_member": "reguler"
-            }
-        ]
-    }
-    500:
-    {
-        "success": false,
         "message": "Internal server error"
     }
 
@@ -195,8 +195,8 @@
 **Request body: JSON**
 
     {
-        "nominal": "25000",
-        "questionType": "1"
+        "bayar": "25000",
+        "tipeSoal": "1"
     }
 
 **Response: JSON**
@@ -208,12 +208,10 @@
     }
     402:
     {
-        "success": false,
         "message": "Payment is required"
     }
     500:
     {
-        "success": false,
         "message": "Internal server error"
     }
 
@@ -223,7 +221,7 @@
 **Request body: JSON**
 
     {
-        "nominal": "200000"
+        "bayar": "200000"
     }
 
 **Response: JSON**
@@ -235,12 +233,10 @@
     }
     402:
     {
-        "success": false,
         "message": "Payment is required"
     }
     500:
     {
-        "success": false,
         "message": "Internal server error"
     }
 
@@ -465,23 +461,35 @@
     }
 
 ## Rasionalisasi (/rasionalisasi)
-### Cek pilihan utama (GET /utama)
+### Cek pilihan utama (GET /utama/:id)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Request (params): id**
 
 **Response: JSON**
 
     200:
     {
+        "success": true,
+        "data": [
+            {
+            "universitas": "Universitas Brawijaya",
+            "prodi": "Sistem Informasi",
+            "nilai": 912,
+            "prediksi": 644.45
+            }
+        ],
         "message": "Berdasarkan simulasi BrawijayaTO, nilai kamu diprediksikan SUDAH memenuhi batas nilai prediksi lulus prodi yang kamu pilih."
     }
     500:
     {
-        "success": false,
         "message": "Internal server error"
     }
 
-### Alternatif universitas (GET /alternatif/universitas)
+### Alternatif universitas (GET /alternatif/universitas/:id)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Request (params): id**
 
 **Response: JSON**
 
@@ -489,25 +497,42 @@
     {
         "success": true,
         "data": [
-            {
-                "prodi": "Teknik Mesin",
-                "universitas": "Universitas Brawijaya",
-            },
             {
                 "prodi": "Sistem Informasi",
                 "universitas": "Universitas Brawijaya",
+                "batas_nilai": 644.45
             },
-            {.....}
+            {
+                "prodi": "Informatika",
+                "universitas": "Universitas Brawijaya",
+                "batas_nilai": 646.77
+            },
+            {
+                "prodi": "Teknologi Informasi",
+                "universitas": "Universitas Brawijaya",
+                "batas_nilai": 623.07
+            },
+            {
+                "prodi": "Teknik Komputer",
+                "universitas": "Universitas Brawijaya",
+                "batas_nilai": 624.45
+            },
+            {
+                "prodi": "Matematika",
+                "universitas": "Universitas Brawijaya",
+                "batas_nilai": 636.24
+            }
         ]
     }
     500:
     {
-        "success": false,
         "message": "Internal server error"
     }
 
-### Alternatif prodi (GET /alternatif/prodi)
+### Alternatif prodi (GET /alternatif/prodi/:id)
 **Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Request (params): id**
 
 **Response: JSON**
 
@@ -516,19 +541,77 @@
         "success": true,
         "data": [
             {
-                "prodi": "Kedokteran",
-                "universitas": "Universitas Gajah Mada",
+                "prodi": "Sistem Informasi",
+                "universitas": "Universitas Brawijaya",
+                "batas_nilai": 644.45
             },
             {
-                "prodi": "Kedokteran",
+                "prodi": "Sistem Informasi",
                 "universitas": "Universitas Indonesia",
+                "batas_nilai": 686.5
             },
-            {.....}
+            {
+                "prodi": "Sistem Informasi",
+                "universitas": "Institut Teknologi Sepuluh November",
+                "batas_nilai": 669.85
+            },
+            {
+                "prodi": "Sistem Informasi",
+                "universitas": "Universitas Airlangga",
+                "batas_nilai": 646.02
+            },
+            {
+                "prodi": "Sistem Informasi",
+                "universitas": "Universitas Jember",
+                "batas_nilai": 606.66
+            }
         ]
     }
     500:
     {
-        "success": false,
+        "message": "Internal server error"
+    }
+
+### Alternatif bidang keilmuan (GET /alternatif/bidang/:id)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Request (params): id**
+
+**Response: JSON**
+
+    200:
+    {
+        "success": true,
+        "data": [
+            {
+                "prodi": "Ilmu Komputer",
+                "universitas": "Universitas Indonesia",
+                "batas_nilai": 712.41
+            },
+            {
+                "prodi": "Ilmu Komputer",
+                "universitas": "Institut Pertanian Bogor",
+                "batas_nilai": 663.79
+            },
+            {
+                "prodi": "Ilmu Komputer",
+                "universitas": "Universitas Gajah Mada",
+                "batas_nilai": 678.96
+            },
+            {
+                "prodi": "Ilmu Komputer",
+                "universitas": "Universitas Negeri Jakarta",
+                "batas_nilai": 648.91
+            },
+            {
+                "prodi": "Ilmu Komputer",
+                "universitas": "Universitas Udayana",
+                "batas_nilai": 612.39
+            }
+        ]
+    }
+    500:
+    {
         "message": "Internal server error"
     }
 
@@ -545,7 +628,6 @@
     }
     403:
     {
-        "success": false,
         "message" "You're not premium member"
     }
     
@@ -559,24 +641,134 @@
         "success": true,
         "data": [
             {
-                "id": 1,
-                "data": "a"
-            },
-            {
-                "id": 2,
-                "data": "c"
-            },
-            {
                 "id": 3,
-                "data": "a"
+                "tipe_soal": "TPS",
+                "materi": "Kemampuan Penalaran Umum",
+                "jawaban": "a"
             },
-            {...}
+            {
+                "id": 4,
+                "tipe_soal": "TPS",
+                "materi": "Kemampuan Penalaran Umum",
+                "jawaban": "c"
+            },
+            {
+                "id": 5,
+                "tipe_soal": "TPS",
+                "materi": "Kemampuan Penalaran Umum",
+                "jawaban": "c"
+            }
         ]
     }
     403:
     {
-        "success": false,
         "message" "You're not premium member"
     }
     
+## Pencapaian (/pencapaian)
+### Hasil semua to (GET /semua)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
 
+**Response: JSON**
+
+    200:
+    {
+        "success": true,
+        "data": [
+            {
+                "nilai": 912,
+                "to_ke": 1
+            }
+        ]
+    }
+    500:
+    {
+        "message": "Internal server error"
+    }
+
+### Hasil rinci to (GET /rinci/:id)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Request (params): id**
+
+**Response: JSON**
+
+    200:
+    {
+        "success": true,
+        "tps": 1200,
+        "materi 1": 600,
+        "materi 2": 840,
+        "materi 3": 1080,
+        "materi 4": 840
+    }
+    500:
+    {
+        "message": "Internal server error"
+    }
+
+## Tryout (/tryout)
+### Soal (GET /soal/:id)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Request (params): id**
+
+**Response: JSON**
+
+    200:
+    {
+        "status": true,
+        "data": [
+            {
+                "id": 3,
+                "tipe": 3,
+                "konten": "Senja berhubungan dengan ..., sebagaimana ..., berhubungan dengan berlari.",
+                "opsi_a": "malam-berjalan",
+                "opsi_b": "petang-kejar",
+                "opsi_c": "waktu-cepat ",
+                "opsi_d": "siang-kaki"
+            }
+        ]
+    }
+    500:
+    {
+        "message": "Internal server error"
+    }
+
+### Rekap (POST /rekap/:id)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Request (params): id**
+
+**Request (body): JSON**
+
+    {
+	"jawaban": "a"
+    }
+
+**Response: JSON**
+
+    200:
+    {
+        "success": true,
+        "message": "Rekap nilai berhasil"
+    }
+    500:
+    {
+        "message": "Internal server error"
+    }
+
+### Hitung (POST /hitung)
+**Request (headers): (Required) Authorization: Bearer <JWT_TOKEN>**
+
+**Response: JSON**
+
+    200:
+    {
+        "success": true,
+        "message": "Nilai berhasil dihitung"
+    }
+    500:
+    {
+        "message": "Internal server error"
+    }
